@@ -1,0 +1,24 @@
+{
+  "name": "phore/system",
+  "type": "library",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Matthias Leuffen",
+      "email": "leuffen@continue.de"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "Phore\\System\\": "src/"
+    },
+    "files": [
+      "src/functions.php"
+    ]
+  },
+  "require": {
+    "php" : ">7.1"
+  },
+  "suggest": {
+  }
+}
