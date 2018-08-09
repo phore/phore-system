@@ -7,6 +7,13 @@
  */
 
 
+/**
+ * @param $cmd
+ * @param array $args
+ * @param bool $returnArray
+ * @return string|array
+ * @throws Exception
+ */
 function phore_exec($cmd, array $args=[], $returnArray=false)
 {
     $cmd = preg_replace_callback( '/\?|\:[a-z0-9_\-]+/i',
