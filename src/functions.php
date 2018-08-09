@@ -30,5 +30,5 @@ function phore_exec($cmd, array $args=[], $returnArray=false)
         throw new Exception("Command '$cmd' returned with code $return. " . implode("\n", $output));
     if ($returnArray)
         return $output;
-    return implode("", $output);
+    return implode("\n", $output);
 }
