@@ -18,11 +18,30 @@ echo $return;
 
 **phore_proc**
 
+- Read STDOUT/STDERR:
+
 ```php
-$result = phore_proc("ls -l ?", ["/some/path"])->wait();
+$result = phore_proc("ls -l *", ["/some/path"])->wait();
 echo "\nStderr: " . $result->getSTDERRContents(); 
 echo "\nStdOut: " . $result->getSTDOUTContents();
 ```
+
+- Read stream
+
+```php
+$result = phore_proc("ls -l *", ["/some/path"])
+    watch(1, function ($data, $len, PhoreProc $proc) use () {
+        if ($data === null) {
+            echo "End of stream";
+            return;
+        }
+        echo "Steam in: $data";
+    })->wait();
+echo "\nStderr: " . $result->getSTDERRContents(); 
+```
+
+
+
 
 ## Installation
 
