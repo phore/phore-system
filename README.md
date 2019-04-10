@@ -10,9 +10,18 @@ document issues.
 
 ## Quickstart
 
+**phore_exec**
 ```php
 $return = phore_exec("ls -l :path", ["path"=>"some Path "])
 echo $return;
+```
+
+**phore_proc**
+
+```php
+$result = phore_proc("ls -l ?", ["/some/path"])->wait();
+echo "\nStderr: " . $result->getSTDERRContents(); 
+echo "\nStdOut: " . $result->getSTDOUTContents();
 ```
 
 ## Installation
