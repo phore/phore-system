@@ -30,7 +30,7 @@ echo "\nStdOut: " . $result->getSTDOUTContents();
 
 ```php
 $result = phore_proc("ls -l *", ["/some/path"])
-    watch(1, function ($data, $len, PhoreProc $proc) use () {
+    ->watch(1, function ($data, $len, PhoreProc $proc) use () {
         if ($data === null) {
             echo "End of stream";
             return;
