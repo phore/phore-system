@@ -9,12 +9,15 @@
 namespace Phore\System;
 
 
+use Phore\Core\Exception\TimeoutException;
+
 class PhoreProc
 {
 
     private $cmd;
     private $cwd;
     private $env;
+    private $timeout = null;
 
     private $listener = [
         1 => null, // Default: Open STDOUT
@@ -29,6 +32,12 @@ class PhoreProc
         $this->cmd = phore_escape($cmd, $params, function(string $input) { return escapeshellarg($input);});
         $this->cwd = $cwd;
         $this->env = $env;
+    }
+
+    public function setTimeout(int $timeout) : self
+    {
+        $this->timeout = $timeout;
+        return $this;
     }
 
 
@@ -116,7 +125,15 @@ class PhoreProc
             }
         }
 
+        $startTime = time();
+        $timeoutReached = false;
         while(true) {
+            if ($this->timeout !== null && (time() - $this->timeout) > $startTime) {
+                $timeoutReached = true;
+                proc_terminate($this->proc, SIGKILL);
+                break;
+            }
+
             $allPipesClosed = true;
             $noData = true;
             foreach ($buf as $chanId => &$buffer) {
@@ -141,7 +158,7 @@ class PhoreProc
                 usleep(500);
             }
         }
-
+        
         foreach ($this->listener as $chanId => $listener) {
             if ($listener === null)
                 continue;
@@ -149,12 +166,13 @@ class PhoreProc
             fclose($this->pipes[$chanId]);
         }
         fclose($this->pipes[0]);
-
-
+        
         $exitStatus = proc_close($this->proc);
         $errmsg = "";
         if (isset ($buf[2]))
             $errmsg = $buf[2];
+        if ($timeoutReached)
+            throw new TimeoutException("Command '$this->cmd' timeout after $this->timeout seconds", $exitStatus);
         if ($exitStatus !== 0) {
             throw new PhoreExecException("Command '$this->cmd' returned with exit-code $exitStatus: $errmsg", $exitStatus);
         }
