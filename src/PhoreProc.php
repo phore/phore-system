@@ -110,6 +110,7 @@ class PhoreProc
      * @param bool $throwExceptionOnError
      * @return PhoreProcResult
      * @throws PhoreExecException
+     * @throws TimeoutException
      */
     public function wait(bool $throwExceptionOnError=true) : PhoreProcResult
     {
