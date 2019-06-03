@@ -28,6 +28,22 @@ function phore_exec($cmd, array $args=[], $returnArray=false)
 /**
  * @param $cmd
  * @param array $args
+ * @param bool $returnArray
+ * @return string|array
+ * @throws \Phore\System\PhoreExecException
+ */
+function phore_passthru($cmd, array $args=[])
+{
+    $cmd = phore_escape($cmd, $args, function(string $input) { return escapeshellarg($input); });
+    passthru($cmd . " 2>&1", $return);
+    if ($return !== 0)
+        throw new \Phore\System\PhoreExecException("Command '$cmd' returned with code $return", $return);
+    return true;
+}
+
+/**
+ * @param $cmd
+ * @param array $args
  * @param string|null $cwd
  * @param array $env
  * @return \Phore\System\PhoreProc
