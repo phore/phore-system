@@ -69,6 +69,32 @@ class PhoreProc
         return $this->cmd;
     }
 
+    /**
+     * Write data (default: to stdin)
+     * 
+     * @param string $data
+     * @param int $channel
+     */
+    public function write(string $data, int $channel = 0) : self
+    {
+        if ( ! fwrite($this->pipes[$channel], $data))
+            throw new \InvalidArgumentException("Cannot write to channel $channel");
+        return $this;
+    }
+
+    /**
+     * Close a channel (default: stdin) after writing to it
+     * 
+     * @param int $channel
+     */
+    public function close(int $channel = 0) : self
+    {
+        fclose($this->pipes[$channel]);
+        $this->pipes[$channel] = null;
+        return $this;
+    }
+    
+    
 
     /**
      * Execute the process.
@@ -166,7 +192,8 @@ class PhoreProc
             $listener(null, null, $this);
             fclose($this->pipes[$chanId]);
         }
-        fclose($this->pipes[0]);
+        if ($this->pipes[0] !== null)
+            fclose($this->pipes[0]);
         
         $exitStatus = proc_close($this->proc);
         $errmsg = "";
