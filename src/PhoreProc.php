@@ -72,6 +72,12 @@ class PhoreProc
     /**
      * Write data (default: to stdin)
      * 
+     * <example>
+     * // Exec password programm and wirte "some data" to stdin.
+     * phore_proc("passwd")->exec()->fwrite("some data")->close()->wait();
+     * </example>
+     * 
+     * 
      * @param string $data
      * @param int $channel
      */
