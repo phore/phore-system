@@ -2,6 +2,7 @@
   "name": "phore/system",
   "type": "library",
   "license": "MIT",
+  "homepage": "https://infracamp.org/project/phore",
   "description": "Execute shell commands",
   "authors": [
     {
