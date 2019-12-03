@@ -19,7 +19,7 @@ function phore_exec($cmd, array $args=[], $returnArray=false)
     $cmd = phore_escape($cmd, $args, function(string $input) { return escapeshellarg($input); });
     exec($cmd . " 2>&1", $output, $return);
     if ($return !== 0)
-        throw new \Phore\System\PhoreExecException("Command '$cmd' returned with code $return. " . implode("\n", $output));
+        throw new \Phore\System\PhoreExecException("Command '$cmd' returned with code $return. " . implode("\n", $output), $return);
     if ($returnArray)
         return $output;
     return implode("\n", $output);
