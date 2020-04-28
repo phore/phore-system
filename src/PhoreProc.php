@@ -27,7 +27,7 @@ class PhoreProc
     private $pipes = null;
     private $proc = null;
 
-    public function __construct($cmd, array $params=[],string $cwd=null, array $env=[])
+    public function __construct($cmd, array $params=[],string $cwd=null, array $env=null)
     {
         $this->cmd = phore_escape($cmd, $params, function(string $input) { return escapeshellarg($input);});
         $this->cwd = $cwd;
@@ -119,7 +119,7 @@ class PhoreProc
             $descSpec[$chanId] = ["pipe", "w"];
         }
 
-        $this->proc = proc_open($this->cmd, $descSpec, $pipes);
+        $this->proc = proc_open($this->cmd, $descSpec, $pipes, $this->cwd, $this->env);
 
         if ($this->proc === false)
             throw new \Exception("Unable to proc_open()");
