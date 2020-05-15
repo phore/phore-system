@@ -11,7 +11,7 @@ namespace Phore\System;
 
 class PhoreExecException extends \Exception
 {
-
-
-
+    public function setMessage($message){
+        $this->message = $message;
+    }
 }
