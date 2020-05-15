@@ -8,7 +8,5 @@ apache_fallback_resource: "/index.php"
 command:
   init:
     - "composer update"
-
-
   test:
     - "phpunit"
