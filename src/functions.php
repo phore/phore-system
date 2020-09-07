@@ -8,6 +8,17 @@
 
 
 /**
+ * Execute a command
+ *
+ * <example>
+ * $result = phore_exec("some_command ?", ["unescaped parameter"]);
+ * </example>
+ *
+ * By default, it will return both, stderr and stdout.
+ *
+ * If third parameter is true, it will return an array with each line
+ * 
+ *
  * @param $cmd
  * @param array $args
  * @param bool $returnArray
