@@ -71,13 +71,13 @@ class PhoreProc
 
     /**
      * Write data (default: to stdin)
-     * 
+     *
      * <example>
      * // Exec password programm and wirte "some data" to stdin.
      * phore_proc("passwd")->exec()->fwrite("some data")->close()->wait();
      * </example>
-     * 
-     * 
+     *
+     *
      * @param string $data
      * @param int $channel
      */
@@ -90,7 +90,7 @@ class PhoreProc
 
     /**
      * Close a channel (default: stdin) after writing to it
-     * 
+     *
      * @param int $channel
      */
     public function close(int $channel = 0) : self
@@ -99,8 +99,8 @@ class PhoreProc
         $this->pipes[$channel] = null;
         return $this;
     }
-    
-    
+
+
 
     /**
      * Execute the process.
@@ -191,7 +191,7 @@ class PhoreProc
                 usleep(500);
             }
         }
-        
+
         foreach ($this->listener as $chanId => $listener) {
             if ($listener === null)
                 continue;
@@ -200,14 +200,14 @@ class PhoreProc
         }
         if ($this->pipes[0] !== null)
             fclose($this->pipes[0]);
-        
+
         $exitStatus = proc_close($this->proc);
         $errmsg = "";
         if (isset ($buf[2]))
             $errmsg = $buf[2];
         if ($timeoutReached)
             throw new TimeoutException("Command '$this->cmd' timeout after $this->timeout seconds", $exitStatus);
-        if ($exitStatus !== 0) {
+        if ($exitStatus !== 0 && $throwExceptionOnError) {
             throw new PhoreExecException("Command '$this->cmd' returned with exit-code $exitStatus: $errmsg", $exitStatus);
         }
         return new PhoreProcResult($exitStatus, $buf);
